@@ -78,10 +78,13 @@ def createBoard(boardName, user_id):
 	doc_id = 'boards'
 	doc = db[doc_id]
 	boards = doc['board']
-	length = len(boards)
+	length = str(len(boards))
 	count = 0
-	board_id = '0'
-	if length != 0:
+	list1 = []
+	board_id = 0
+	if(length == 0):
+		board_id = 0
+	else:
 		list1 = boards.keys()
 		list1 = map(int, list1)
 		board_id = str(max(list1) + 1)
@@ -89,13 +92,19 @@ def createBoard(boardName, user_id):
 	docid = 'UserInfo'
 	doc1 = db[docid]
 	users = doc1['user']
-	print 
+	flag = 0
 	for item in users:
          	if user_id == item["user_id"]:
+         		flag = 1
          		item["boardlist"].append(board_id)
          		db.save(doc1)
-         		db.save(doc)
-         		return board_id
+         
+        if flag == 1:
+        	db.save(doc)
+        	return board_id
+        	
+        else:
+        	return "Invalid User"
 		
 	
 # Attach Pin	
@@ -126,15 +135,12 @@ def attachPin(boardId, pinId):
 def createPin(pinname,pinpath):
 	print '----->createPin'
 	db = couch['pinterest']
+	
 	doc = db['pins']
 	allpins = doc['allpins']
-	pin_id = '0'
-	length = len(allpins)
-	print length
-	if length != 0 :
-		list1 = allpins.keys()
-		list1 = map(int, list1)
-		pin_id = str(max(list1) + 1)
+	list1 = allpins.keys()
+	list1 = map(int, list1)
+	pin_id = str(max(list1) + 1)
 	
 	newPin = {'pinname':pinname,'comments':[],'pinpath':pinpath}
 	allpins[pin_id] = newPin

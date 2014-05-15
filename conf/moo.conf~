@@ -1,4 +1,4 @@
-svc.host=192.168.0.79
+svc.host=192.168.0.78
 svc.port=8080
 svc.log.dir=$HOME/logs
 data.scratch.dir=/tmp
