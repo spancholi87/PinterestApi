@@ -124,19 +124,47 @@ def attachPin(user_id, board_id):
    return control.attachPin(fmt, board_id, pin_id,user_id)
 
 
-# Upload Pin
-@route('/upload', method='POST')
-def do_upload():
+# Upload Pin from file
+@route('/v2/user/:user_id/pin/uploadfile', method='POST')
+def do_upload(user_id):
+	print user_id
+	fmt=__format(request)	
+	response.content_type = __response_format(fmt)
+	file1 = request.files.get('value')
+	print request.get
+	if not file1:
+		return "Please Upload an Image"
+      
+    	cwd = os.getcwd()
+    	dest = cwd + '/images'
+    	dirList = os.listdir(dest)
+    	i=1
+    	for fname in dirList:
+    		i=i+1
+    
+    	imagename = 'image' + str(i) + '.jpg'
+    	pinname = imagename
+     
+    	if not os.path.exists(dest):
+    		os.makedirs(dest)
+    	file_path = "{path}/{file}".format(path=dest, file=imagename)
+    
+    	with open(file_path, 'w') as open_file:
+    		open_file.write(file1.file.read())
+        
+    	pinpath=dest+'/'+imagename
+    	return control.createPin(fmt,pinname,pinpath,user_id)
+    
+# Upload Pin from Url
+@route('/v2/user/:user_id/pin/uploadurl', method='POST')
+def do_upload(user_id):
     fmt=__format(request)
-    #print fmt
     response.content_type = __response_format(fmt)
-    # example list form values
     for k,v in request.forms.allitems():
       print "file:",k,"=",v
 
     url = request.forms.get('value')
     pinname = urlparse.urlparse(url).path.split('/')[-1]
-    #print pinname
     image=urllib.URLopener()
     cwd = os.getcwd()
    
@@ -149,8 +177,7 @@ def do_upload():
     imagename = 'image' + str(i) + '.jpg'
     image.retrieve(url,imagename)
     src = cwd + '/' + imagename
-    print '*******'
-      
+ 
     if not os.path.exists(dest):
         os.makedirs(dest)
     print src
@@ -158,7 +185,7 @@ def do_upload():
     
     shutil.move(src,dest)
     pinpath=dest+'/'+imagename
-    return control.createPin(fmt,pinname,pinpath)
+    return control.createPin(fmt,pinname,pinpath,user_id)
      
 
 #Get All User Info

@@ -102,10 +102,10 @@ class Controller(object):
    #  
    #Create Pin wihout logging in
    #	
-   def createPin(self, format,pinname,pinpath):
+   def createPin(self, format,pinname,pinpath,user_id):
        if format == Controller.json:
       
-       	       return self.__createPin_as_json(pinname,pinpath)
+       	       return self.__createPin_as_json(pinname,pinpath,user_id)
        else:
        	       return self.__msg_as_text()
 
@@ -222,9 +222,13 @@ class Controller(object):
                 return "unable to return val"
    
    #create pin as json
-   def __createPin_as_json(self, pinname, pinpath):
+   def __createPin_as_json(self, pinname, pinpath,user_id):
    	   try:
-   	   	   pin_id = store.createPin(pinname,pinpath)
+   	   	   print "Hello first Line here"
+   	   	   if not(sessionId.has_key(user_id)):
+   	   	   	   return "Invalid Token"
+   	   	   	   
+		   pin_id = store.createPin(pinname,pinpath)
    	   	   rsp = {}
    	   	   rsp['pin_id'] = pin_id
    	   	   return json.dumps(rsp)
