@@ -226,7 +226,7 @@ class Controller(object):
    	   try:
    	   	   print "Hello first Line here"
    	   	   if not(sessionId.has_key(user_id)):
-   	   	   	   return "Invalid Token"
+   	   	   	   return "Invalid User or Password"
    	   	   	   
 		   pin_id = store.createPin(pinname,pinpath)
    	   	   rsp = {}
@@ -239,7 +239,7 @@ class Controller(object):
    def __deleteBoard_as_json(self,board_id,user_id):
       print "sessionId ",sessionId
       if(not(sessionId.has_key(user_id))):
-	 return "Invalid Token"	
+	 return "Invalid User or Password"	
       try:
       	 rsp = store.deleteBoard(board_id)
 	 return json.dumps(rsp)
@@ -250,7 +250,7 @@ class Controller(object):
    def __attachPin_as_json(self,board_id,pin_id,user_id):
       print "sessionId ",sessionId
       if(not(sessionId.has_key(user_id))):
-	 return "Invalid Token"	
+	 return "Invalid User or Password"	
       try:
       	 rsp = store.attachPin(board_id, pin_id)
 	 return json.dumps(rsp)
@@ -266,7 +266,7 @@ class Controller(object):
    def __createBoard_as_json(self, boardname, user_id):
 	  print "sessionId ",sessionId
 	  if(not(sessionId.has_key(user_id))):
-		return "Invalid Token"		
+		return "Invalid User or Password"		
 	  try:
 		board_id = store.createBoard(boardname,user_id)
    	   	rsp = {}
@@ -281,7 +281,7 @@ class Controller(object):
    def __comment_as_json(self, user_id,pin_id,comment):
 	   print "sessionId ",sessionId
 	   if(not(sessionId.has_key(user_id))):
-		return "Invalid Token"	
+		return "Invalid User or Password"	
    	   try:
 		   cmt = store.comment(user_id,pin_id,comment)
 		   print cmt
@@ -296,7 +296,7 @@ class Controller(object):
    def __getAllUserInfo_as_json(self,user_id):
 	   print "sessionId ",sessionId
 	   if(not(sessionId.has_key(user_id))):
-		return "Invalid Token"	
+		return "Invalid User or Password"	
    	   try:
    	   	   user = store.getAllUserInfo(user_id)
    	   	   rsp = {}

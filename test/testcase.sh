@@ -41,9 +41,13 @@ curl -i -H "Accept: application/json" http://${hostname}:8080/v1/boards/1
 echo $'\nTesting Get Boards****************'
 curl -i -H "Accept: application/json" http://${hostname}:8080/v1/boards
 
-#Upload Pin
+#Upload Pin From Url 
 echo $'\nTesting Upload Pin****************'
-curl -i -H "Accept: application/json" --data "name='client_url'&value=http://hd.wallpaperhunt.com/wp-content/uploads/2014/03/Hd-wallpapers-of-cars-free-download-1.jpg" http://${hostname}:8080/upload 
+curl -i -H "Accept: application/json" --data "name='client_url'&value=http://hd.wallpaperhunt.com/wp-content/uploads/2014/03/Hd-wallpapers-of-cars-free-download-1.jpg" http://${hostname}:8080/v2/user/swap1/pin/uploadurl 
+
+#Upload Pin From Disk
+echo $'\nTesting Upload Pin****************'
+curl "http://${hostname}:8080/v2/user/swap1/pin/uploadfile" -F value=@"/home/swap/1.jpg"
 
 #Get User Info
 echo $'\nTesting Get User Info****************'
@@ -51,4 +55,4 @@ curl -i -H "Accept: application/json" http://${hostname}:8080/v1/user/swap1
 
 #Create Board
 echo $'\nTesting Create Board****************'
-curl -i -H "Accept: application/json" --data "boardname='hello'" http://${hostname}:8080/v1/user/420/board
+curl -i -H "Accept: application/json" --data "boardname='hello'" http://${hostname}:8080/v1/user/swap1/board
